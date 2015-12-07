@@ -1,0 +1,111 @@
+#include<bits/stdc++.h>
+using namespace std;
+char s[5000];
+pair<int,int>*p;
+int main()
+{
+    int lefti,righti,i,j,n,k,t,cnt,cnt1,cnt2,cntfinal,diff1,diff2,pn;
+    scanf("%d",&t);
+    while(t--)
+    {
+        p=new pair<int,int>[5000];
+        scanf("%d%d",&n,&k);
+        for(i=0;i<n;i++)
+            s[i]='0';
+        for(i=0;i<k;i++)
+        {
+            scanf("%d%d",&lefti,&righti);
+            s[lefti]='(';
+            s[righti]=')';
+            p[i]=make_pair(righti-lefti,lefti);
+        }
+        sort(p,p+k);
+        for(i=0;i<k;i++)
+        {
+            cnt=0;
+            cnt1=0;
+            cnt2=0;
+            for(j=(p[i].second)+1;j<(p[i].second+p[i].first);j++)
+            {
+                if(s[j]=='0')
+                    cnt++;
+                if(s[j]=='(')
+                    cnt1++;
+                if(s[j]==')')
+                    cnt2++;
+            }
+            if(cnt%2==0)
+            {
+            pn=1;
+            for(j=(p[i].second)+1;j<(p[i].first+p[i].second);j++)
+            {
+                if((s[j]=='0')&&(pn<=(cnt/2)))
+                {
+                    s[j]='(';
+                    pn++;
+                }
+                else if((s[j]=='0') && (pn>(cnt/2)))
+                {
+                    s[j]=')';
+                    pn++;
+                }
+            }
+            }
+            else
+            {
+                if(cnt1>cnt2)
+                {
+                    diff1=cnt1-cnt2;
+                    for(j=(p[i].first+p[i].second)-1;j>=(p[i].second)+1;j--)
+                    {
+                        if(diff1==0)
+                            break;
+                        if(s[j]=='0')
+                        {
+                            s[j]=')';
+                        }
+                        diff1--;
+                    }
+                }
+                else if(cnt2>cnt1)
+                {
+                    diff2=cnt2-cnt1;
+                    for(j=(p[i].second)+1;j<(p[i].first+p[i].second);j++)
+                    {
+                        if(diff2==0)
+                            break;
+                        if(s[j]=='0')
+                        {
+                            s[j]='(';
+                        }
+                        diff2--;
+                    }
+                }
+                cntfinal=0;
+                for(j=(p[i].second)+1;j<(p[i].first+p[i].second);j++)
+                {
+                    if(s[j]=='0')
+                        cntfinal++;
+                }
+                pn=1;
+            for(j=(p[i].second)+1;j<(p[i].first+p[i].second);j++)
+            {
+                if((s[j]=='0')&&(pn<=(cntfinal/2)))
+                {
+                    s[j]='(';
+                    pn++;
+                }
+                else if((s[j]=='0') && (pn>(cntfinal/2)))
+                {
+                    s[j]=')';
+                    pn++;
+                }
+            }
+            }
+        }
+        for(i=0;i<n;i++)
+            printf("%c",s[i]);
+        printf("\n");
+    }
+    return 0;
+}
